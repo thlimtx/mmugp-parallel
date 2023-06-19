@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
     int array_size = 0;
     while (count < file_count)
     {
-        int max_line = 0, local_size = 0;
+        int max_line = 1, local_size = 0;
         infile = fopen(file_name[count], "r");
         if (infile == NULL)
         {
@@ -138,42 +138,44 @@ int main(int argc, char *argv[])
 
         char line[1000];
         const char *s = " ";
-        int line_num = local_start;
-        while ((line_num <= local_end && fgets(line, sizeof(line), infile) != NULL))
+        int line_num = 0;
+        // loop through each line of the files
+        while (fgets(line, sizeof(line), infile) != NULL)
         {
-            for (int i = 0; line[i] != '\0'; i++)
+            // check if the current line in the file is between the start and end of this section
+            if (local_start <= line_num && line_num <= local_end)
             {
-                if ((line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122))
-                    line[i] = tolower(line[i]);
-                else
-                    line[i] = ' ';
-            }
-
-
-            char *word = strtok(line, s);
-            while (word != NULL)
-            {
-                int found = 0;
-                for (int i = 0; i < local_size; i++)
+                for (int i = 0; line[i] != '\0'; i++)
                 {
-                    if (strcmp(local_array[i].word, word) == 0)
+                    if ((line[i] >= 65 && line[i] <= 90) || (line[i] >= 97 && line[i] <= 122))
+                        line[i] = tolower(line[i]);
+                    else
+                        line[i] = ' ';
+                }
+
+                char *word = strtok(line, s);
+                while (word != NULL)
+                {
+                    int found = 0;
+                    for (int i = 0; i < local_size; i++)
                     {
-                        found = 1;
-                        local_array[i].count++;
-                        break;
+                        if (strcmp(local_array[i].word, word) == 0)
+                        {
+                            found = 1;
+                            local_array[i].count++;
+                            break;
+                        }
                     }
+                    if (found == 0)
+                    {
+                        local_array = realloc(local_array, sizeof(struct Frequency) * (local_size + 1));
+                        strcpy(local_array[local_size].word, word);
+                        local_array[local_size].count++;
+                        local_size++;
+                    }
+                    word = strtok(NULL, s);
                 }
-                if (found == 0)
-                {
-                    local_array = realloc(local_array, sizeof(struct Frequency) * (local_size + 1));
-                    strcpy(local_array[local_size].word, word);
-                    local_array[local_size].count++;
-                    local_size++;
-                }
-                word = strtok(NULL, s);
             }
-
-
             line_num++;
         }
         if (!rank)
