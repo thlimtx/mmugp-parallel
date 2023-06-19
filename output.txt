@@ -1,0 +1,9 @@
+Size: 7 
+Word Count Report (Number of Words Order):
+a: 22 
+again: 8 
+house: 12 
+is: 22 
+not: 11 
+test: 10 
+this: 22 
