@@ -126,10 +126,6 @@ int main(int argc, char *argv[])
         int chunk_size = max_line / np;
         local_start = rank * chunk_size;
 
-// edit
-printf("\nmaxline: %d", max_line);
-printf("\nchunk_size: %d", chunk_size);
-printf("\nlocal_start: %d", local_start);
 
         if (rank == np - 1)
             local_end = max_line - 1;
