@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 
 
         char line[1000];
-        const char *s = " ";
+        const char *s = " \n\t\r";
         int line_num = 0;
         // loop through each line of the files
         while (fgets(line, sizeof(line), infile) != NULL)
