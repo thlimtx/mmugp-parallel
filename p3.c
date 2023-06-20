@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
                     {
                         local_array = realloc(local_array, sizeof(struct Frequency) * (local_size + 1));
                         strcpy(local_array[local_size].word, word);
-                        local_array[local_size].count++;
+                        local_array[local_size].count = 1;
                         local_size++;
                     }
                     word = strtok(NULL, s);
