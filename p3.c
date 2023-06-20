@@ -87,7 +87,10 @@ int main(int argc, char *argv[])
     {
         if (rank != 0)
             file_name[i] = (char *)malloc(sizeof(char) * 100);
-        int temp = strlen(file_name[i]) + 1;
+        int temp;
+        if(!rank)
+            temp=strlen(file_name[i]) +1;
+        MPI_Bcast(&temp,1,MPI_INT,0,MPI_COMM_WORLD);
         MPI_Bcast(file_name[i], temp, MPI_CHAR, 0, MPI_COMM_WORLD);
     }
 
